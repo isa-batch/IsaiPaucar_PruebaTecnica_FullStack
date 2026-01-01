@@ -16,6 +16,7 @@ namespace Repository
         {
             // Repositorios
             services.AddScoped<Interfaces.IUsuarioRepository, Implementations.UsuarioRepository>();
+            services.AddScoped<Interfaces.IProyectoRepository, Implementations.ProyectoRepository>();
 
             return services;
         }

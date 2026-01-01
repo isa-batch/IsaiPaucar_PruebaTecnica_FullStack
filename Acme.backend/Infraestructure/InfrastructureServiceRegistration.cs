@@ -16,6 +16,7 @@ namespace Infraestructure
         {
             // Helpers de infraestructura
             services.AddScoped<Helpers.JwtTokenGenerator>();
+            services.AddScoped<Helpers.ClaimsHelper>();
 
             return services;
         }

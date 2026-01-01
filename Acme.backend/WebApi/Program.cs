@@ -11,7 +11,7 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// ===== CONFIGURACIÓN DE SERVICIOS =====
+// ===== CONFIGURACIï¿½N DE SERVICIOS =====
 
 // 1. DbContext con MySQL
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
@@ -21,16 +21,18 @@ builder.Services.AddDbContext<AppDbContext>(options =>
         .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking)
 );
 
-// 2. AutoMapper - Configuración Manual
+// 2. AutoMapper - Configuraciï¿½n Manual
 builder.Services.AddAutoMapper(cfg => cfg.AddProfile<AutoMapperProfiles>());
 
+// 2.5. HttpContextAccessor (para ClaimsHelper)
+builder.Services.AddHttpContextAccessor();
 
-// 3. Inyección de Dependencias (ServiceRegistrations)
+// 3. Inyecciï¿½n de Dependencias (ServiceRegistrations)
 builder.Services.AddInfrastructureServices(builder.Configuration);
 builder.Services.AddDomainServices();
 builder.Services.AddPersistenceServices();
 
-// 4. Autenticación JWT
+// 4. Autenticaciï¿½n JWT
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -79,7 +81,7 @@ builder.Services.AddSwaggerGen(c =>
         Version = "v1"
     });
 
-    // Configuración JWT en Swagger
+    // Configuraciï¿½n JWT en Swagger
     c.AddSecurityDefinition("Bearer", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
     {
         Description = "JWT Authorization header using the Bearer scheme. Example: \"Bearer {token}\"",
@@ -105,7 +107,7 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 
-// ===== CONFIGURACIÓN DEL PIPELINE HTTP =====
+// ===== CONFIGURACIï¿½N DEL PIPELINE HTTP =====
 
 var app = builder.Build();
 
@@ -122,7 +124,7 @@ app.UseCors();
 // HTTPS Redirection
 app.UseHttpsRedirection();
 
-// Autenticación y Autorización
+// Autenticaciï¿½n y Autorizaciï¿½n
 app.UseAuthentication();
 app.UseAuthorization();
 
