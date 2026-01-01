@@ -14,13 +14,8 @@ namespace Infraestructure
             this IServiceCollection services,
             IConfiguration configuration)
         {
-            // Aquí registrarás servicios de infraestructura
-            // Ejemplo:
-            // services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
-            // services.AddScoped<IClaimsHelper, ClaimsHelper>();
-
-            // Servicios externos (APIs de terceros)
-            // services.AddHttpClient<IEmailService, EmailService>();
+            // Helpers de infraestructura
+            services.AddScoped<Helpers.JwtTokenGenerator>();
 
             return services;
         }

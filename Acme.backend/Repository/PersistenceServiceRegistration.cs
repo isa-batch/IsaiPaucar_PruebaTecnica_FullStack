@@ -14,8 +14,8 @@ namespace Repository
         public static IServiceCollection AddPersistenceServices(
             this IServiceCollection services)
         {
-            // Aquí se registran repositorios
-            // services.AddScoped<IProductoRepository, ProductoRepository>();
+            // Repositorios
+            services.AddScoped<Interfaces.IUsuarioRepository, Implementations.UsuarioRepository>();
 
             return services;
         }

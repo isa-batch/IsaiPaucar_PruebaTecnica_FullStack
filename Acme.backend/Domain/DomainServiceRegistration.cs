@@ -13,8 +13,8 @@ namespace Domain
         public static IServiceCollection AddDomainServices(
             this IServiceCollection services)
         {
-            // Aquí se registran dominios
-            // services.AddScoped<IProductoDomain, ProductoDomain>();
+            // Dominios de negocio
+            services.AddScoped<AuthDomain>();
 
             return services;
         }
