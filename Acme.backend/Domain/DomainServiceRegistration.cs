@@ -16,6 +16,7 @@ namespace Domain
             // Dominios de negocio
             services.AddScoped<AuthDomain>();
             services.AddScoped<ProyectoDomain>();
+            services.AddScoped<TareaDomain>();
 
             return services;
         }
