@@ -12,6 +12,7 @@ import { ConfirmationService } from 'primeng/api';
 
 import { routes } from './app.routes';
 import { authInterceptor } from './core/interceptors/auth.interceptor';
+import { provideToastr } from 'ngx-toastr';
 
 const AcmePreset = definePreset(Lara, {
   semantic: {
@@ -52,6 +53,13 @@ export const appConfig: ApplicationConfig = {
           }
         }
       }
+    }),
+    provideToastr({
+      timeOut: 3000,
+      positionClass: 'toast-top-right',
+      preventDuplicates: true,
+      progressBar: true,
+      closeButton: true
     }),
     DialogService,
     MessageService,
