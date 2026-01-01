@@ -11,7 +11,7 @@ import { MessageService } from 'primeng/api';
 import { ConfirmationService } from 'primeng/api';
 
 import { routes } from './app.routes';
-import { authInterceptor } from './core/interceptors/auth.interceptor';
+import { authInterceptor } from './auth/auth.interceptor';
 import { provideToastr } from 'ngx-toastr';
 
 const AcmePreset = definePreset(Lara, {
