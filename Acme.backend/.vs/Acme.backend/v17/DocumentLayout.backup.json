@@ -1,0 +1,58 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\ISAI\\Desktop\\Paucar Lazo Isai Altaf - Full Stack Junior\\Acme.backend\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{2B696A31-43EA-4FCA-8940-319512291B61}|WebApi\\WebApi.csproj|c:\\users\\isai\\desktop\\paucar lazo isai altaf - full stack junior\\acme.backend\\webapi\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{2B696A31-43EA-4FCA-8940-319512291B61}|WebApi\\WebApi.csproj|solutionrelative:webapi\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1AC5F278-D218-4645-81FF-ACFAB46D09E8}|Repository\\Repository.csproj|c:\\users\\isai\\desktop\\paucar lazo isai altaf - full stack junior\\acme.backend\\repository\\appdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1AC5F278-D218-4645-81FF-ACFAB46D09E8}|Repository\\Repository.csproj|solutionrelative:repository\\appdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 100,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 1,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\ISAI\\Desktop\\Paucar Lazo Isai Altaf - Full Stack Junior\\Acme.backend\\WebApi\\Program.cs",
+              "RelativeDocumentMoniker": "WebApi\\Program.cs",
+              "ToolTip": "C:\\Users\\ISAI\\Desktop\\Paucar Lazo Isai Altaf - Full Stack Junior\\Acme.backend\\WebApi\\Program.cs",
+              "RelativeToolTip": "WebApi\\Program.cs",
+              "ViewState": "AgIAACEAAAAAAAAAAAAAADsAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-01T18:46:26.307Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "AppDbContext.cs",
+              "DocumentMoniker": "C:\\Users\\ISAI\\Desktop\\Paucar Lazo Isai Altaf - Full Stack Junior\\Acme.backend\\Repository\\AppDbContext.cs",
+              "RelativeDocumentMoniker": "Repository\\AppDbContext.cs",
+              "ToolTip": "C:\\Users\\ISAI\\Desktop\\Paucar Lazo Isai Altaf - Full Stack Junior\\Acme.backend\\Repository\\AppDbContext.cs",
+              "RelativeToolTip": "Repository\\AppDbContext.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABcAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-01T18:41:20.961Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

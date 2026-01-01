@@ -1,0 +1,15 @@
+C:\Users\ISAI\Desktop\Paucar Lazo Isai Altaf - Full Stack Junior\Acme.backend\Infraestructure\bin\Debug\net8.0\Infraestructure.deps.json
+C:\Users\ISAI\Desktop\Paucar Lazo Isai Altaf - Full Stack Junior\Acme.backend\Infraestructure\bin\Debug\net8.0\Infraestructure.dll
+C:\Users\ISAI\Desktop\Paucar Lazo Isai Altaf - Full Stack Junior\Acme.backend\Infraestructure\bin\Debug\net8.0\Infraestructure.pdb
+C:\Users\ISAI\Desktop\Paucar Lazo Isai Altaf - Full Stack Junior\Acme.backend\Infraestructure\bin\Debug\net8.0\Model.dll
+C:\Users\ISAI\Desktop\Paucar Lazo Isai Altaf - Full Stack Junior\Acme.backend\Infraestructure\bin\Debug\net8.0\Model.pdb
+C:\Users\ISAI\Desktop\Paucar Lazo Isai Altaf - Full Stack Junior\Acme.backend\Infraestructure\obj\Debug\net8.0\Infraestructure.csproj.AssemblyReference.cache
+C:\Users\ISAI\Desktop\Paucar Lazo Isai Altaf - Full Stack Junior\Acme.backend\Infraestructure\obj\Debug\net8.0\Infraestructure.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\ISAI\Desktop\Paucar Lazo Isai Altaf - Full Stack Junior\Acme.backend\Infraestructure\obj\Debug\net8.0\Infraestructure.AssemblyInfoInputs.cache
+C:\Users\ISAI\Desktop\Paucar Lazo Isai Altaf - Full Stack Junior\Acme.backend\Infraestructure\obj\Debug\net8.0\Infraestructure.AssemblyInfo.cs
+C:\Users\ISAI\Desktop\Paucar Lazo Isai Altaf - Full Stack Junior\Acme.backend\Infraestructure\obj\Debug\net8.0\Infraestructure.csproj.CoreCompileInputs.cache
+C:\Users\ISAI\Desktop\Paucar Lazo Isai Altaf - Full Stack Junior\Acme.backend\Infraestructure\obj\Debug\net8.0\Infraest.B0D41582.Up2Date
+C:\Users\ISAI\Desktop\Paucar Lazo Isai Altaf - Full Stack Junior\Acme.backend\Infraestructure\obj\Debug\net8.0\Infraestructure.dll
+C:\Users\ISAI\Desktop\Paucar Lazo Isai Altaf - Full Stack Junior\Acme.backend\Infraestructure\obj\Debug\net8.0\refint\Infraestructure.dll
+C:\Users\ISAI\Desktop\Paucar Lazo Isai Altaf - Full Stack Junior\Acme.backend\Infraestructure\obj\Debug\net8.0\Infraestructure.pdb
+C:\Users\ISAI\Desktop\Paucar Lazo Isai Altaf - Full Stack Junior\Acme.backend\Infraestructure\obj\Debug\net8.0\ref\Infraestructure.dll
