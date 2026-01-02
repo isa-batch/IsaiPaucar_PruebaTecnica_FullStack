@@ -223,8 +223,18 @@
     color: #64748b;
 }
 
-.btn-action.edit:hover {
+.btn-action.edit:hover:not(:disabled) {
     background: #f1f5f9;
+}
+
+.btn-action:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.p-button-rounded:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
 }
 
 .btn-action.delete {

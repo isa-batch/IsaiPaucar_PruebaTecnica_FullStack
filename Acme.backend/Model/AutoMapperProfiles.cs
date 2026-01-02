@@ -37,10 +37,20 @@ namespace Model
                 .ForMember(dest => dest.Descripcion, opt => opt.MapFrom(src => src.descripcion))
                 .ForMember(dest => dest.PropietarioId, opt => opt.MapFrom(src => src.propietario_id))
                 .ForMember(dest => dest.Propietario, opt => opt.MapFrom(src => src.Propietario))
+                .ForMember(dest => dest.Miembros, opt => opt.MapFrom(src => src.Miembros.Where(m => m.estado == 1)))
                 .ForMember(dest => dest.CantidadMiembros, opt => opt.MapFrom(src => src.Miembros.Count(m => m.estado == 1)))
                 .ForMember(dest => dest.CantidadTareas, opt => opt.MapFrom(src => src.Tareas.Count(t => t.estado == 1)))
                 .ForMember(dest => dest.CreadoEn, opt => opt.MapFrom(src => src.creado_en))
                 .ForMember(dest => dest.ModificadoEn, opt => opt.MapFrom(src => src.modificado_en));
+
+            CreateMap<ProyectoUsuario, ProyectoMiembroDto>()
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.id))
+                .ForMember(dest => dest.ProyectoId, opt => opt.MapFrom(src => src.proyecto_id))
+                .ForMember(dest => dest.UsuarioId, opt => opt.MapFrom(src => src.usuario_id))
+                .ForMember(dest => dest.Usuario, opt => opt.MapFrom(src => src.Usuario))
+                .ForMember(dest => dest.Rol, opt => opt.MapFrom(src => src.rol))
+                .ForMember(dest => dest.RolNombre, opt => opt.MapFrom(src =>
+                    src.rol == 1 ? "OWNER" : "MEMBER"));
 
             CreateMap<ProyectoRequest, Proyecto>()
                 .ForMember(dest => dest.id, opt => opt.MapFrom(src => src.Id ?? 0))

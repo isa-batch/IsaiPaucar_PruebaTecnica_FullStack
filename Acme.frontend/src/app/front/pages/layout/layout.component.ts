@@ -10,7 +10,10 @@ import { LoaderComponent } from '../../../shared/components/loader/loader.compon
 import { MenuItem } from 'primeng/api';
 import { AuthService } from '../../../services/auth.service';
 import { LoadingService } from '../../../core/services/loading.service';
-import { filter } from 'rxjs/operators';
+import { ProyectoService } from '../../../services/proyecto.service';
+import { ToastService } from '../../../services/toast.service';
+import { InvitacionDto } from '../../../interfaces/proyecto.interface';
+import { filter, interval } from 'rxjs';
 
 @Component({
   selector: 'app-layout',
@@ -29,6 +32,7 @@ import { filter } from 'rxjs/operators';
 })
 export class LayoutComponent implements OnInit {
   @ViewChild('userMenu') userMenu!: Menu;
+  @ViewChild('notificationsMenu') notificationsMenu!: Menu;
 
   sidebarOpen = true;
   isLargeScreen = false;
@@ -37,6 +41,9 @@ export class LayoutComponent implements OnInit {
 
   currentUser: any;
   userMenuItems: MenuItem[] = [];
+  notificationMenuItems: MenuItem[] = [];
+  invitacionesPendientes = signal<InvitacionDto[]>([]);
+
   menuItems = [
     {
       label: 'Inicio',
@@ -53,7 +60,9 @@ export class LayoutComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private router: Router,
-    private loadingService: LoadingService
+    private loadingService: LoadingService,
+    private proyectoService: ProyectoService,
+    private toastService: ToastService
   ) {
     this.currentUser = this.authService.getCurrentUser();
     this.userMenuItems = [
@@ -79,6 +88,37 @@ export class LayoutComponent implements OnInit {
         }
       }, 1000);
     });
+
+    // Cargar invitaciones pendientes al iniciar
+    this.cargarInvitaciones();
+
+    // Polling cada 30 segundos para actualizar invitaciones
+    interval(30000).subscribe(() => {
+      this.cargarInvitaciones();
+    });
+  }
+
+  cargarInvitaciones(): void {
+    this.proyectoService.getMisInvitaciones().subscribe({
+      next: (res) => {
+        if (res.success && res.data) {
+          this.invitacionesPendientes.set(res.data);
+          this.actualizarMenuNotificaciones();
+        }
+      },
+      error: (err) => {
+        console.error('Error al cargar invitaciones:', err);
+      }
+    });
+  }
+
+  actualizarMenuNotificaciones(): void {
+    this.notificationMenuItems = this.invitacionesPendientes().map(inv => ({
+      label: inv.proyecto?.nombre || 'Proyecto',
+      subtitle: `Invitación de ${inv.proyecto?.propietario?.nombre || 'un usuario'}`,
+      invitacionId: inv.id,
+      icon: 'pi pi-folder'
+    }));
   }
 
   /* HostListener needed for resize, add import if missing */
@@ -122,6 +162,50 @@ export class LayoutComponent implements OnInit {
     if (this.userMenu) {
       this.userMenu.toggle(event);
     }
+  }
+
+  toggleNotifications(event: Event): void {
+    if (this.notificationsMenu) {
+      this.notificationsMenu.toggle(event);
+    }
+  }
+
+  aceptarInvitacion(invitacionId: number, event: Event): void {
+    event.stopPropagation();
+
+    this.proyectoService.responderInvitacion({ invitacionId, aceptar: true }).subscribe({
+      next: (res) => {
+        if (res.success) {
+          this.toastService.success('Invitación aceptada');
+          this.cargarInvitaciones();
+          if (this.notificationsMenu) {
+            this.notificationsMenu.hide();
+          }
+        } else {
+          this.toastService.error(res.message);
+        }
+      },
+      error: () => this.toastService.error('Error al aceptar invitación')
+    });
+  }
+
+  rechazarInvitacion(invitacionId: number, event: Event): void {
+    event.stopPropagation();
+
+    this.proyectoService.responderInvitacion({ invitacionId, aceptar: false }).subscribe({
+      next: (res) => {
+        if (res.success) {
+          this.toastService.info('Invitación rechazada');
+          this.cargarInvitaciones();
+          if (this.notificationsMenu) {
+            this.notificationsMenu.hide();
+          }
+        } else {
+          this.toastService.error(res.message);
+        }
+      },
+      error: () => this.toastService.error('Error al rechazar invitación')
+    });
   }
 
   logout(): void {

@@ -45,8 +45,17 @@ export class ProyectoService {
     return this.http.get<IResponse<InvitacionDto[]>>(`${baseUrl}/Proyecto/mis-invitaciones`);
   }
 
+  aceptarInvitacion(invitacionId: number): Observable<IResponse<boolean>> {
+    return this.http.post<IResponse<boolean>>(`${baseUrl}/Proyecto/invitaciones/${invitacionId}/aceptar`, {});
+  }
+
+  rechazarInvitacion(invitacionId: number): Observable<IResponse<boolean>> {
+    return this.http.post<IResponse<boolean>>(`${baseUrl}/Proyecto/invitaciones/${invitacionId}/rechazar`, {});
+  }
+
   responderInvitacion(request: RespuestaInvitacionRequest): Observable<IResponse<boolean>> {
-    return this.http.post<IResponse<boolean>>(`${baseUrl}/Proyecto/responder-invitacion`, request);
+    const endpoint = request.aceptar ? 'aceptar' : 'rechazar';
+    return this.http.post<IResponse<boolean>>(`${baseUrl}/Proyecto/invitaciones/${request.invitacionId}/${endpoint}`, {});
   }
 
   removerMiembro(proyectoId: number, usuarioId: number): Observable<IResponse<boolean>> {

@@ -53,11 +53,16 @@
           <i class="pi pi-eye"></i>
           <span>Ver</span>
         </button>
-        <button class="btn-action edit" (click)="openEditDialog(proyecto)" pTooltip="Editar proyecto">
+        <button
+          *ngIf="isOwner(proyecto)"
+          class="btn-action edit"
+          (click)="openEditDialog(proyecto)"
+          pTooltip="Editar proyecto">
           <i class="pi pi-pencil"></i>
           <span>Editar</span>
         </button>
         <button
+            *ngIf="isOwner(proyecto)"
             pButton
             icon="pi pi-trash"
             class="p-button-rounded p-button-danger p-button-text"

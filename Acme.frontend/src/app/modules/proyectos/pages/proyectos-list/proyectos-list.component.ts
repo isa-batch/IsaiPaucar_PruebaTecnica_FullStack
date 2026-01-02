@@ -5,12 +5,14 @@ import { CardModule } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { TooltipModule } from 'primeng/tooltip';
 import { ConfirmationService } from 'primeng/api';
 import { InputTextModule } from 'primeng/inputtext';
 import { InputTextarea } from 'primeng/inputtextarea';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ProyectoService } from '../../../../services/proyecto.service';
 import { ToastService } from '../../../../services/toast.service';
+import { AuthService } from '../../../../services/auth.service';
 import { Proyecto, ProyectoRequest } from '../../../../interfaces/proyecto.interface';
 
 @Component({
@@ -22,6 +24,7 @@ import { Proyecto, ProyectoRequest } from '../../../../interfaces/proyecto.inter
     ButtonModule,
     DialogModule,
     ConfirmDialogModule,
+    TooltipModule,
     InputTextModule,
     InputTextarea,
     FormsModule,
@@ -40,6 +43,7 @@ export class ProyectosListComponent implements OnInit {
   constructor(
     private proyectoService: ProyectoService,
     private toastService: ToastService,
+    private authService: AuthService,
     private fb: FormBuilder,
     private router: Router
   ) {
@@ -142,5 +146,10 @@ export class ProyectosListComponent implements OnInit {
         });
       }
     });
+  }
+
+  isOwner(proyecto: Proyecto): boolean {
+    const currentUser = this.authService.getCurrentUser();
+    return !!(currentUser && proyecto.propietarioId === currentUser.id);
   }
 }
