@@ -1,0 +1,354 @@
+/* Estilos personalizados para el panel de administración */
+/* Layout oscuro (sidebar + navbar) con área de contenido clara */
+
+/* Scrollbar personalizado para sidebar oscuro */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: rgba(15, 23, 42, 0.3);
+  border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(71, 85, 105, 0.5);
+  border-radius: 10px;
+  transition: background 0.2s;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(71, 85, 105, 0.8);
+}
+
+/* Scrollbar para área de contenido clara */
+main::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+main::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 10px;
+}
+
+main::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 10px;
+}
+
+main::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Animaciones suaves para el sidebar */
+aside {
+  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Estados hover mejorados */
+.hover\:scale-105:hover {
+  transform: scale(1.05);
+}
+
+/* Sombras personalizadas */
+.shadow-custom {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+/* Estilos para PrimeNG Menu */
+::ng-deep .p-menu {
+  border-radius: 0.5rem;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  border: 1px solid #e5e7eb;
+}
+
+::ng-deep .p-menu .p-menuitem-link {
+  padding: 0.75rem 1rem;
+  transition: all 0.2s;
+}
+
+::ng-deep .p-menu .p-menuitem-link:hover {
+  background: #f9fafb;
+}
+
+::ng-deep .p-menu .p-menuitem-icon {
+  color: #6b7280;
+}
+
+/* Avatar mejorado */
+::ng-deep .p-avatar {
+  font-weight: 600;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Responsive improvements */
+@media (max-width: 1024px) {
+  aside {
+    overflow-x: hidden;
+  }
+}
+
+/* Mejora para botones activos en el sidebar */
+.router-link-active {
+  position: relative;
+}
+
+/* Indicador de item activo */
+.router-link-active::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 4px;
+  height: 70%;
+  background: #3b82f6;
+  border-radius: 0 4px 4px 0;
+}
+
+/* Transiciones suaves globales */
+* {
+  transition-property: background-color, border-color, color, fill, stroke, opacity, box-shadow, transform;
+  transition-duration: 200ms;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+button,
+a {
+  transition-property: all;
+}
+
+/* Mejora de contraste para textos en sidebar */
+.text-sidebar {
+  color: #cbd5e1;
+}
+
+.text-sidebar-muted {
+  color: #94a3b8;
+}
+
+/* Cards en área blanca con mejor contraste */
+::ng-deep .p-card {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  border-radius: 0.5rem;
+}
+
+::ng-deep .p-card .p-card-title {
+  color: #1e293b;
+  font-weight: 600;
+}
+
+::ng-deep .p-card .p-card-content {
+  color: #475569;
+}
+
+/* ============================================
+   NAVBAR & USER MENU FIX
+   ============================================ */
+
+/* Fix navbar deformation - ensure header stays fixed */
+header {
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 1000 !important;
+  will-change: auto !important;
+}
+
+/* Prevent p-menu from causing layout shifts */
+::ng-deep .p-menu.p-menu-overlay {
+  z-index: 9999 !important;
+  min-width: 200px;
+  max-width: 280px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  border: 1px solid #cbd5e1;
+  margin-top: 0.5rem;
+  background: white;
+}
+
+/* Ensure proper menu item styling */
+::ng-deep .p-menu .p-menuitem-link {
+  padding: 0.875rem 1rem !important;
+  transition: background-color 0.2s ease, color 0.2s ease !important;
+  display: flex !important;
+  align-items: center !important;
+}
+
+::ng-deep .p-menu .p-menuitem-link:hover {
+  background-color: #f1f5f9 !important;
+}
+
+::ng-deep .p-menu .p-menuitem-link:focus {
+  box-shadow: none !important;
+  outline: 2px solid #3b82f6 !important;
+  outline-offset: -2px !important;
+}
+
+::ng-deep .p-menu .p-menuitem-icon {
+  color: #64748b !important;
+  margin-right: 0.75rem !important;
+  font-size: 1rem !important;
+  flex-shrink: 0 !important;
+}
+
+::ng-deep .p-menu .p-menuitem-text {
+  color: #1e293b !important;
+  font-size: 0.875rem !important;
+  font-weight: 500 !important;
+  flex-grow: 1 !important;
+}
+
+::ng-deep .p-menu .p-menu-separator {
+  margin: 0.25rem 0 !important;
+  border-top: 1px solid #e2e8f0 !important;
+}
+
+/* User menu button - prevent flex shrink */
+header button {
+  flex-shrink: 0 !important;
+}
+
+/* Prevent avatar from causing shifts */
+::ng-deep .p-avatar {
+  flex-shrink: 0 !important;
+}
+
+/* Fix for mobile menu positioning */
+@media (max-width: 768px) {
+  ::ng-deep .p-menu.p-menu-overlay {
+    max-width: 250px;
+  }
+
+  ::ng-deep .p-menu .p-menuitem-link {
+    padding: 1rem 0.875rem !important;
+  }
+
+  ::ng-deep .p-menu .p-menuitem-text {
+    font-size: 1rem !important;
+  }
+
+  ::ng-deep .p-menu .p-menuitem-icon {
+    font-size: 1.125rem !important;
+  }
+}
+
+/* Prevent text wrapping in user info */
+header .text-right p {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 200px;
+}
+
+@media (max-width: 1200px) {
+  header .text-right p {
+    max-width: 150px;
+  }
+}
+
+/* ============================================
+   RESPONSIVE MOBILE OPTIMIZATIONS
+   ============================================ */
+
+/* Tablets y dispositivos medianos (768px - 1024px) */
+@media (max-width: 1024px) {
+
+  /* Sidebar overlay en tablets */
+  aside {
+    z-index: 999;
+  }
+
+  /* Ajustar padding del main content */
+  main {
+    padding: 1rem !important;
+  }
+}
+
+/* Móviles grandes (640px - 768px) */
+@media (max-width: 768px) {
+
+  /* Header más compacto */
+  header {
+    padding: 0.75rem 1rem !important;
+  }
+
+  /* Logo más pequeño */
+  header img {
+    height: 2rem !important;
+  }
+
+  /* Texto del header más pequeño */
+  header h1 {
+    font-size: 1rem !important;
+  }
+
+  /* Main content con menos padding */
+  main {
+    padding: 0.75rem !important;
+  }
+
+  /* Botones full width en móvil */
+  ::ng-deep .p-button:not(.p-button-icon-only) {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* Móviles pequeños (< 640px) */
+@media (max-width: 640px) {
+
+  /* Header ultra compacto */
+  header {
+    padding: 0.5rem 0.75rem !important;
+  }
+
+  header h1 {
+    font-size: 0.875rem !important;
+    display: none;
+  }
+
+  /* Avatar más pequeño */
+  ::ng-deep .p-avatar {
+    width: 2rem !important;
+    height: 2rem !important;
+    font-size: 0.875rem !important;
+  }
+
+  /* Main content mínimo padding */
+  main {
+    padding: 0.5rem !important;
+  }
+
+  /* Texto más pequeño */
+  body {
+    font-size: 0.875rem;
+  }
+}
+
+/* Sidebar responsivo mejorado */
+@media (max-width: 1024px) {
+  aside.sidebar-expanded {
+    position: fixed !important;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    z-index: 1000;
+    box-shadow: 0 0 0 100vmax rgba(0, 0, 0, 0.5);
+  }
+}
+
+/* Touch targets más grandes para móvil */
+@media (max-width: 768px) {
+
+  button,
+  a,
+  ::ng-deep .p-button,
+  ::ng-deep .p-menuitem-link {
+    min-height: 44px;
+    min-width: 44px;
+  }
+}
