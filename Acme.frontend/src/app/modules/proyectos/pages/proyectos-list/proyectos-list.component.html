@@ -1,0 +1,157 @@
+<div class="proyectos-container">
+  <div class="header">
+    <h1 class="title">Mis Proyectos</h1>
+    <button
+      pButton
+      label="Nuevo Proyecto"
+      icon="pi pi-plus"
+      (click)="openCreateDialog()"
+      class="btn-new-project"
+    ></button>
+  </div>
+
+  <div class="proyectos-grid" *ngIf="!loading(); else loadingTemplate">
+    <div
+      *ngFor="let proyecto of proyectos()"
+      class="acme-project-card"
+    >
+      <div class="card-header-v2">
+        <div class="header-overlay"></div>
+        <div class="header-icon">
+          <i class="pi pi-folder"></i>
+        </div>
+        <div class="owner-badge" *ngIf="proyecto.propietario">
+          <i class="pi pi-user"></i>
+          <span>{{ proyecto.propietario.nombre }}</span>
+        </div>
+      </div>
+
+      <div class="card-body">
+        <div class="title-section">
+          <h2 class="project-title">{{ proyecto.nombre }}</h2>
+          <span class="date-hint">Creado {{ proyecto.creadoEn | date:'dd MMM, yyyy' }}</span>
+        </div>
+        
+        <p class="description">{{ proyecto.descripcion || 'Sin descripción detallada para este proyecto.' }}</p>
+
+        <div class="card-stats-v2">
+          <div class="stat-pill">
+            <i class="pi pi-users"></i>
+            <span class="count">{{ proyecto.miembros?.length || 0 }}</span>
+            <span class="label">Miembros</span>
+          </div>
+          <div class="stat-pill">
+            <i class="pi pi-check-square"></i>
+            <span class="count">{{ proyecto.cantidadTareas || 0 }}</span>
+            <span class="label">Tareas</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card-footer-v2">
+        <button class="btn-action view" (click)="viewProyecto(proyecto)" pTooltip="Ver detalles">
+          <i class="pi pi-eye"></i>
+          <span>Ver</span>
+        </button>
+        <button class="btn-action edit" (click)="openEditDialog(proyecto)" pTooltip="Editar proyecto">
+          <i class="pi pi-pencil"></i>
+          <span>Editar</span>
+        </button>
+        <button class="btn-action delete" (click)="deleteProyecto(proyecto)" pTooltip="Eliminar proyecto">
+          <i class="pi pi-trash"></i>
+          <span>Eliminar</span>
+        </button>
+      </div>
+    </div>
+
+    <div *ngIf="proyectos().length === 0" class="empty-state">
+      <i class="pi pi-folder-open text-6xl text-gray-400"></i>
+      <h3>No tienes proyectos</h3>
+      <p>Crea tu primer proyecto para comenzar</p>
+    </div>
+  </div>
+
+  <ng-template #loadingTemplate>
+    <div class="loading-state">
+      <i class="pi pi-spin pi-spinner text-4xl text-primary"></i>
+      <p>Cargando proyectos...</p>
+    </div>
+  </ng-template>
+</div>
+
+<!-- Dialog -->
+<p-dialog
+  [(visible)]="showDialog"
+  [modal]="true"
+  [style]="{ width: '450px' }"
+  [draggable]="false"
+  [resizable]="false"
+  [closable]="true"
+  styleClass="acme-dialog"
+>
+  <ng-template pTemplate="header">
+    <div class="dialog-header-content">
+      <div class="dialog-icon-container">
+        <i [class]="editingProyecto ? 'pi pi-pencil' : 'pi pi-plus'"></i>
+      </div>
+      <div>
+        <h2 class="dialog-title">{{ editingProyecto ? 'Editar Proyecto' : 'Nuevo Proyecto' }}</h2>
+        <p class="dialog-subtitle">{{ editingProyecto ? 'Modifica los detalles del proyecto' : 'Crea un nuevo espacio de trabajo' }}</p>
+      </div>
+    </div>
+  </ng-template>
+
+  <form [formGroup]="proyectoForm" (ngSubmit)="saveProyecto()" class="modern-form">
+    <div class="form-field">
+      <label for="nombre">Nombre del Proyecto <span class="required">*</span></label>
+      <div class="input-with-icon">
+        <i class="pi pi-tag"></i>
+        <input
+          pInputText
+          id="nombre"
+          formControlName="nombre"
+          placeholder="Ej: Rediseño de marca"
+          class="w-full"
+        />
+      </div>
+      <small class="error-msg" *ngIf="proyectoForm.get('nombre')?.invalid && proyectoForm.get('nombre')?.touched">
+        <i class="pi pi-exclamation-circle"></i> El nombre es obligatorio
+      </small>
+    </div>
+
+    <div class="form-field">
+      <label for="descripcion">Descripción</label>
+      <div class="input-with-icon align-top">
+        <i class="pi pi-align-left"></i>
+        <textarea
+          pInputTextarea
+          id="descripcion"
+          formControlName="descripcion"
+          placeholder="Describe brevemente el propósito del proyecto..."
+          rows="4"
+          class="w-full"
+        ></textarea>
+      </div>
+      <small class="hint-msg">Máximo 500 caracteres</small>
+    </div>
+
+    <div class="dialog-footer">
+      <button
+        type="button"
+        class="btn-secondary"
+        (click)="showDialog.set(false)"
+      >
+        Cancelar
+      </button>
+      <button
+        type="submit"
+        class="btn-primary"
+        [disabled]="proyectoForm.invalid"
+      >
+        {{ editingProyecto ? 'Actualizar Proyecto' : 'Crear Proyecto' }}
+      </button>
+    </div>
+  </form>
+</p-dialog>
+
+<p-confirmDialog styleClass="acme-confirm-dialog"></p-confirmDialog>
