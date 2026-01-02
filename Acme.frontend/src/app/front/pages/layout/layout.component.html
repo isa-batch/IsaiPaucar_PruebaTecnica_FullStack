@@ -1,0 +1,195 @@
+<div class="flex flex-col h-screen bg-gray-100">
+
+  <!-- HEADER / NAVBAR OSCURO -->
+  <header class="flex items-center justify-between px-4 lg:px-6 py-3 bg-slate-800 border-b border-slate-700 shadow-lg z-30">
+    
+    <!-- Left Section: Logo + Toggle -->
+    <div class="flex items-center space-x-4">
+      <button
+        class="p-2 rounded-lg text-slate-300 hover:bg-slate-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-200"
+        (click)="toggleSidebar()"
+      >
+        <i class="pi text-xl" [ngClass]="sidebarOpen ? 'pi-times' : 'pi-bars'"></i>
+      </button>
+      
+      <div class="flex items-center space-x-3">
+        <div class="w-9 h-9 bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg flex items-center justify-center shadow-md">
+          <i class="pi pi-shield text-white text-sm"></i>
+        </div>
+        <div class="hidden sm:block">
+          <h1 class="text-lg font-bold text-white">Acme Projects</h1>
+          <p class="text-xs text-slate-400">Gestión de proyectos</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Section: User -->
+    <div class="flex items-center space-x-2 lg:space-x-4 flex-shrink-0">
+
+      <!-- Notifications Bell -->
+      <div class="relative">
+        <button
+          type="button"
+          (click)="toggleNotifications($event)"
+          class="relative p-2 rounded-lg text-slate-300 hover:bg-slate-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-200"
+        >
+          <i class="pi pi-bell text-xl"></i>
+          <span
+            *ngIf="invitacionesPendientes().length > 0"
+            class="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center shadow-lg"
+          >
+            {{ invitacionesPendientes().length }}
+          </span>
+        </button>
+
+        <p-menu #notificationsMenu [model]="notificationMenuItems" [popup]="true" appendTo="body" styleClass="w-80">
+          <ng-template pTemplate="start">
+            <div class="px-4 py-3 border-b border-gray-200">
+              <h3 class="font-bold text-gray-800">Invitaciones</h3>
+              <p class="text-xs text-gray-500">{{ invitacionesPendientes().length }} pendientes</p>
+            </div>
+          </ng-template>
+          <ng-template pTemplate="item" let-item>
+            <div class="px-4 py-3 hover:bg-gray-50 cursor-pointer">
+              <div class="flex items-start gap-3">
+                <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <i class="pi pi-folder text-blue-600"></i>
+                </div>
+                <div class="flex-1 min-w-0">
+                  <p class="text-sm font-semibold text-gray-800 truncate">{{ item.label }}</p>
+                  <p class="text-xs text-gray-500 mt-1">{{ item.subtitle }}</p>
+                  <div class="flex gap-2 mt-2">
+                    <button
+                      (click)="aceptarInvitacion(item.invitacionId, $event)"
+                      class="px-3 py-1 text-xs bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors"
+                    >
+                      Aceptar
+                    </button>
+                    <button
+                      (click)="rechazarInvitacion(item.invitacionId, $event)"
+                      class="px-3 py-1 text-xs bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-colors"
+                    >
+                      Rechazar
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </ng-template>
+          <ng-template pTemplate="end" *ngIf="invitacionesPendientes().length === 0">
+            <div class="px-4 py-6 text-center text-gray-500">
+              <i class="pi pi-inbox text-4xl mb-2 text-gray-300"></i>
+              <p class="text-sm">No tienes invitaciones pendientes</p>
+            </div>
+          </ng-template>
+        </p-menu>
+      </div>
+
+      <!-- User Menu -->
+      <div class="relative">
+        <button
+          type="button"
+          (click)="toggleUserMenu($event)"
+          class="flex items-center space-x-3 px-3 py-2 rounded-lg hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-200 group"
+        >
+          <div class="text-right hidden md:block leading-tight">
+            <!-- Nombre: Blanco y negrita -->
+            <p class="text-sm font-bold text-white truncate group-hover:text-blue-200 transition-colors">
+              {{ currentUser?.nombre || 'Usuario' }} {{ currentUser?.apellidos || '' }}
+            </p>
+            <!-- Email: Gris claro -->
+            <p class="text-xs text-slate-400 truncate opacity-80 group-hover:opacity-100 transition-opacity">
+              {{ currentUser?.email || 'usuario@acme.com' }}
+            </p>
+          </div>
+          
+          <!-- Avatar: Fondo Blanco/Gris Claro, Texto Oscuro -->
+          <p-avatar
+            [label]="getInitials(currentUser)"
+            styleClass="bg-slate-200 text-slate-800 font-bold border-2 border-slate-600 group-hover:border-blue-400 transition-colors"
+            size="large"
+            shape="circle">
+          </p-avatar>
+          
+          <i class="pi pi-chevron-down text-slate-400 text-xs hidden md:block group-hover:text-white transition-colors"></i>
+        </button>
+
+        <p-menu #userMenu [model]="userMenuItems" [popup]="true" appendTo="body"></p-menu>
+      </div>
+    </div>
+  </header>
+
+  <div class="flex flex-1 overflow-hidden">
+
+    <!-- Backdrop para móvil -->
+    <div
+      *ngIf="!isLargeScreen && sidebarOpen"
+      class="fixed inset-0 bg-black/50 z-40 lg:hidden backdrop-blur-sm"
+      (click)="toggleSidebar()"
+    ></div>
+
+    <!-- SIDEBAR OSCURO -->
+    <aside
+      class="bg-slate-800 border-r border-slate-700 shadow-xl flex flex-col transition-all duration-300 ease-in-out"
+      [ngClass]="{
+        'w-64': sidebarOpen,
+        'w-0 lg:w-20': !sidebarOpen,
+        'fixed h-full z-50': !isLargeScreen,
+        'relative': isLargeScreen
+      }"
+    >
+      <div class="flex-1 overflow-y-auto overflow-x-hidden custom-scrollbar" [ngClass]="{'px-3 py-4': sidebarOpen || isLargeScreen}">
+        <nav>
+          <ul class="space-y-1">
+            
+            <li *ngFor="let item of menuItems">
+              
+              <!-- Menú sin sub-items -->
+              <a 
+                 [routerLink]="item.route"
+                 routerLinkActive="bg-blue-600 text-white shadow-md"
+                 [routerLinkActiveOptions]="{exact: true}"
+                 class="flex items-center px-3 py-3 rounded-lg text-slate-300 hover:bg-slate-700 hover:text-white transition-all duration-200 group"
+                 (click)="!isLargeScreen ? toggleSidebar() : null"
+                 [title]="!sidebarOpen && isLargeScreen ? (item.label || '') : ''"
+              >
+                <i [class]="item.icon || ''" class="text-lg" [ngClass]="{'mx-auto': !sidebarOpen && isLargeScreen}"></i>
+                <span 
+                  *ngIf="sidebarOpen || !isLargeScreen" 
+                  class="ml-3 text-sm font-medium transition-opacity duration-200"
+                >
+                  {{ item.label }}
+                </span>
+              </a>
+              
+            </li>
+          </ul>
+        </nav>
+      </div>
+
+      <!-- Sidebar Footer -->
+      <div 
+        *ngIf="sidebarOpen || !isLargeScreen"
+        class="p-4 border-t border-slate-700 bg-slate-900"
+      >
+        <div class="flex items-center space-x-3 text-xs text-slate-400">
+          <div class="w-8 h-8 bg-slate-700 rounded-lg flex items-center justify-center">
+            <i class="pi pi-info-circle text-slate-400"></i>
+          </div>
+          <div>
+            <p class="font-semibold text-slate-300">v1.0.0</p>
+            <p>© 2026 Acme Corp</p>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="flex-1 bg-gray-50 overflow-y-auto relative">
+      <!-- <app-loader></app-loader> -->
+      <div class="p-4 lg:p-6">
+        <router-outlet></router-outlet>
+      </div>
+    </main>
+  </div>
+</div>

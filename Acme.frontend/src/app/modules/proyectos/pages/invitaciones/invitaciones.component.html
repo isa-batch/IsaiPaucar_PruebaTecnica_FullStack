@@ -1,0 +1,71 @@
+<div class="invitaciones-container">
+    <div class="page-header">
+        <div class="header-content">
+            <h1 class="page-title">Mis Invitaciones</h1>
+            <p class="page-subtitle">Gestiona las invitaciones a proyectos en las que has sido invitado a colaborar.</p>
+        </div>
+        <div class="badge-container">
+            <p-tag [value]="invitaciones().length + ' Pendientes'" severity="info" [rounded]="true"></p-tag>
+        </div>
+    </div>
+
+    <div *ngIf="loading()" class="loading-state">
+        <i class="pi pi-spin pi-spinner text-4xl mb-2"></i>
+        <p>Cargando invitaciones...</p>
+    </div>
+
+    <div *ngIf="!loading() && invitaciones().length === 0" class="empty-state">
+        <div class="empty-icon">
+            <i class="pi pi-envelope text-6xl"></i>
+        </div>
+        <h3>Bandeja de entrada vacía</h3>
+        <p>No tienes invitaciones a proyectos pendientes por el momento.</p>
+        <button pButton label="Ver Mis Proyectos" icon="pi pi-folder" class="p-button-outlined mt-4" routerLink="/proyectos"></button>
+    </div>
+
+    <div *ngIf="!loading() && invitaciones().length > 0" class="invitaciones-grid">
+        <div *ngFor="let inv of invitaciones()" class="invitacion-card">
+            <div class="card-glow"></div>
+            <div class="card-content">
+                <div class="project-info">
+                    <div class="project-avatar">
+                        {{ inv.proyecto.nombre.charAt(0) }}
+                    </div>
+                    <div class="project-details">
+                        <h4 class="project-name">{{ inv.proyecto.nombre }}</h4>
+                        <p class="invited-by">Invitado por: <strong>{{ inv.proyecto.propietario.nombre }}</strong></p>
+                    </div>
+                </div>
+
+                <div class="invitation-meta">
+                    <div class="meta-item">
+                        <i class="pi pi-calendar"></i>
+                        <span>Recibida el {{ inv.creadoEn | date:'dd/MM/yyyy' }}</span>
+                    </div>
+                    <p-tag value="PENDIENTE" severity="warning" styleClass="text-xs"></p-tag>
+                </div>
+
+                <div class="card-actions">
+                    <button 
+                        pButton 
+                        label="Rechazar" 
+                        icon="pi pi-times" 
+                        class="p-button-text p-button-danger flex-1"
+                        (click)="rechazarInvitacion(inv)"
+                    ></button>
+                    <button 
+                        pButton 
+                        label="Aceptar" 
+                        icon="pi pi-check" 
+                        class="p-button-primary flex-1 btn-acme"
+                        (click)="aceptarInvitacion(inv)"
+                    ></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <p-confirmDialog 
+        styleClass="acme-confirm-dialog"
+    ></p-confirmDialog>
+</div>
