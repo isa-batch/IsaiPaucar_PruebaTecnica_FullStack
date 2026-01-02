@@ -11,10 +11,10 @@ export const routes: Routes = [
   {
     path: '',
     canActivate: [authenticatedGuard],
-    loadChildren: () => import('./modules/main.routes').then(m => m.mainRoutes)
+    loadChildren: () => import('./front/front.routes').then(m => m.frontRoutes)
   },
   {
     path: '**',
-    redirectTo: ''
+    redirectTo: 'auth/login'
   }
 ];

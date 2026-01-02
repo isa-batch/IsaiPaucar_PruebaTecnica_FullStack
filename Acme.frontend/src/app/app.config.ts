@@ -12,6 +12,7 @@ import { ConfirmationService } from 'primeng/api';
 
 import { routes } from './app.routes';
 import { authInterceptor } from './auth/auth.interceptor';
+import { loadingInterceptor } from './core/interceptors/loading.interceptor';
 import { provideToastr } from 'ngx-toastr';
 
 const AcmePreset = definePreset(Lara, {
@@ -38,7 +39,7 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideHttpClient(
       withFetch(),
-      withInterceptors([authInterceptor])
+      withInterceptors([authInterceptor, loadingInterceptor])
     ),
     provideAnimationsAsync(),
     providePrimeNG({
