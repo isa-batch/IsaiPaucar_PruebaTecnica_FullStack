@@ -1,0 +1,115 @@
+<div class="body">
+
+  <div class="login-container">
+      <div class="login-card">
+          <!-- Header -->
+          <div class="login-header">
+              <h1>Crear Cuenta</h1>
+              <p>Únete a Gestión de Proyectos</p>
+          </div>
+
+          <!-- Body -->
+          <div class="login-body">
+              <!-- Error Alert -->
+              <div *ngIf="error" class="alert">
+                <i class="pi pi-exclamation-circle text-red-500 text-lg mt-0.5"></i>
+                <div>
+                  <p class="text-sm font-medium text-red-400">Error de registro</p>
+                  <p class="text-sm text-red-300">{{ error }}</p>
+                </div>
+              </div>
+
+              <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+                  <!-- Nombre -->
+                  <div class="form-group">
+                      <label class="form-label">Nombre Completo <span class="text-red-500">*</span></label>
+                      <div class="input-wrapper">
+                          <input
+                              type="text"
+                              class="form-input"
+                              formControlName="nombre"
+                              placeholder="Juan Perez"
+                              [class.border-red-500]="registerForm.get('nombre')?.invalid && (registerForm.get('nombre')?.dirty || registerForm.get('nombre')?.touched)"
+                              required
+                          />
+                          <i class="pi pi-user input-icon"></i>
+                      </div>
+                      <div class="error-message"
+                      *ngIf="registerForm.get('nombre')?.invalid && (registerForm.get('nombre')?.dirty || registerForm.get('nombre')?.touched)">
+                          <i class="pi pi-exclamation-circle"></i>
+                          <span *ngIf="registerForm.get('nombre')?.errors?.['required']">El nombre es obligatorio</span>
+                          <span *ngIf="registerForm.get('nombre')?.errors?.['minlength']">Mínimo 3 caracteres</span>
+                      </div>
+                  </div>
+
+                  <!-- Email -->
+                  <div class="form-group">
+                      <label class="form-label">Correo Electrónico <span class="text-red-500">*</span></label>
+                      <div class="input-wrapper">
+                          <input
+                              type="email"
+                              class="form-input"
+                              formControlName="email"
+                              placeholder="tu@email.com"
+                              [class.border-red-500]="registerForm.get('email')?.invalid && (registerForm.get('email')?.dirty || registerForm.get('email')?.touched)"
+                              required
+                          />
+                          <i class="pi pi-envelope input-icon"></i>
+                      </div>
+                      <div class="error-message"
+                      *ngIf="registerForm.get('email')?.invalid && (registerForm.get('email')?.dirty || registerForm.get('email')?.touched)">
+                          <i class="pi pi-exclamation-circle"></i>
+                          <span *ngIf="registerForm.get('email')?.errors?.['required']">El correo es obligatorio</span>
+                          <span *ngIf="registerForm.get('email')?.errors?.['email']">Formato de correo inválido</span>
+                      </div>
+                  </div>
+
+                  <!-- Password -->
+                  <div class="form-group">
+                      <label class="form-label">Contraseña <span class="text-red-500">*</span></label>
+                      <div class="input-wrapper">
+                          <input
+                              [type]="showPassword ? 'text' : 'password'"
+                              formControlName="password"
+                              class="form-input"
+                              placeholder="••••••••"
+                              [class.border-red-500]="registerForm.get('password')?.invalid && (registerForm.get('password')?.dirty || registerForm.get('password')?.touched)"
+                              required
+                          />
+                          <i class="pi pi-lock input-icon"></i>
+                          <button type="button" class="password-toggle" (click)="togglePasswordVisibility()">
+                              <i [class]="showPassword ? 'pi pi-eye-slash' : 'pi pi-eye'"></i>
+                          </button>
+                      </div>
+                      <div class="error-message"
+                       *ngIf="registerForm.get('password')?.invalid && (registerForm.get('password')?.dirty || registerForm.get('password')?.touched)">
+                          <i class="pi pi-exclamation-circle"></i>
+                          <span *ngIf="registerForm.get('password')?.errors?.['required']">La contraseña es requerida</span>
+                          <span *ngIf="registerForm.get('password')?.errors?.['minlength']">Mínimo 6 caracteres</span>
+                      </div>
+                  </div>
+
+                  <!-- Submit button -->
+                  <button type="submit" 
+                  class="btn-submit"
+                  [disabled]="loading || registerForm.invalid">
+                      <div class="btn-content" *ngIf="!loading">
+                          <span>Registrarse</span>
+                          <i class="pi pi-user-plus"></i>
+                      </div>
+
+                      <div class="btn-content" *ngIf="loading">
+                          <span>Registrando...</span>
+                          <i class="pi pi-spin pi-spinner"></i>
+                      </div>
+                  </button>
+
+                  <!-- Login Link -->
+                  <div class="register-link">
+                      ¿Ya tienes cuenta? <a routerLink="/auth/login">Inicia sesión aquí</a>
+                  </div>
+              </form>
+          </div>
+      </div>
+  </div>
+</div>

@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
@@ -6,33 +6,29 @@ import { ToastService } from '../../../services/toast.service';
 import { AuthService } from '../../../services/auth.service';
 
 @Component({
-  selector: 'app-login',
+  selector: 'app-register',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, RouterLink],
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  templateUrl: './register.component.html',
+  styleUrls: ['./register.component.css']
 })
-export class LoginComponent implements OnInit {
+export class RegisterComponent {
   private fb = inject(FormBuilder);
   private authService = inject(AuthService);
   private router = inject(Router);
   private toastService = inject(ToastService);
 
-  loginForm: FormGroup;
+  registerForm: FormGroup;
   loading = false;
   error: string | null = null;
-  success: string | null = null;
   showPassword = false;
 
   constructor() {
-    this.loginForm = this.fb.group({
+    this.registerForm = this.fb.group({
+      nombre: ['', [Validators.required, Validators.minLength(3)]],
       email: ['', [Validators.required, Validators.email]],
-      password: ['', Validators.required],
-      remember: [true]
+      password: ['', [Validators.required, Validators.minLength(6)]]
     });
-  }
-
-  ngOnInit(): void {
   }
 
   togglePasswordVisibility() {
@@ -40,24 +36,24 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmit() {
-    if (this.loginForm.invalid) return;
+    if (this.registerForm.invalid) return;
 
     this.loading = true;
     this.error = null;
-    this.success = null;
 
-    this.authService.login(this.loginForm.value).subscribe({
+    this.authService.register(this.registerForm.value).subscribe({
       next: (response) => {
         this.loading = false;
-        this.toastService.success('¡Inicio de sesión exitoso!', 'Bienvenido');
-        this.loginForm.reset();
+        this.toastService.success('¡Registro exitoso!', 'Bienvenido');
+        this.registerForm.reset();
         setTimeout(() => {
-          this.router.navigate(['/']);
+          this.router.navigate(['/']); // Or login, depending on flow. Auto-login implies /
         }, 1000);
       },
       error: (error) => {
         this.loading = false;
-        this.toastService.error(error.error?.error || 'Error al iniciar sesión', 'Error de autenticación');
+        this.error = error.error?.error || 'Error al registrarse';
+        this.toastService.error(this.error || 'Error desconocido', 'Error de registro');
       }
     });
   }

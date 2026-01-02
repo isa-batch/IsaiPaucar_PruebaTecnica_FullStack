@@ -1,0 +1,109 @@
+<div class="body">
+
+  <div class="login-container">
+        <div class="login-card">
+            <!-- Header -->
+            <div class="login-header">
+                <div class="logo-container">
+                    <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M24 4L6 12V22C6 33.08 13.66 43.2 24 46C34.34 43.2 42 33.08 42 22V12L24 4Z" fill="#3B82F6"/>
+                        <path d="M24 14L14 34H34L24 14ZM24 19L29 29H19L24 19Z" fill="white"/>
+                    </svg>
+                </div>
+                <h1>Bienvenido de nuevo</h1>
+                <p>Gestión de Proyectos</p>
+            </div>
+
+            <!-- Body -->
+            <div class="login-body">
+                <!-- Alerta de error (mostrar solo si hay error) -->
+                <div *ngIf="error" class="alert">
+                  <i class="pi pi-exclamation-circle text-red-500 text-lg mt-0.5"></i>
+                  <div>
+                    <p class="text-sm font-medium text-red-400">Error de autenticación</p>
+                    <p class="text-sm text-red-300">{{ error }}</p>
+                  </div>
+                </div>
+
+                <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" id="loginForm">
+                    <!-- Email -->
+                    <div class="form-group">
+                        <label class="form-label">Correo Electrónico <span class="text-red-500">*</span></label>
+                        <div class="input-wrapper">
+                            <input
+                                type="email"
+                                class="form-input"
+                                formControlName="email"
+                                placeholder="tu@email.com"
+                                [class.border-red-500]="loginForm.get('email')?.invalid && (loginForm.get('email')?.dirty || loginForm.get('email')?.touched)"
+                                required
+                            />
+                            <i class="pi pi-envelope input-icon"></i>
+                        </div>
+                        <!-- Error message -->
+                        <div class="error-message"
+                        *ngIf="loginForm.get('email')?.invalid && (loginForm.get('email')?.dirty || loginForm.get('email')?.touched)">
+                            <i class="pi pi-exclamation-circle"></i>
+                            <span *ngIf="loginForm.get('email')?.errors?.['required']">El correo es obligatorio</span>
+                            <span *ngIf="loginForm.get('email')?.errors?.['email']">Formato de correo inválido</span>
+                        </div>
+                    </div>
+
+                    <!-- Password -->
+                    <div class="form-group">
+                        <label class="form-label">Contraseña <span class="text-red-500">*</span></label>
+                        <div class="input-wrapper">
+                            <input
+                                [type]="showPassword ? 'text' : 'password'"
+                                formControlName="password"
+                                class="form-input"
+                                placeholder="••••••••"
+                                [class.border-red-500]="loginForm.get('password')?.invalid && (loginForm.get('password')?.dirty || loginForm.get('password')?.touched)"
+                                required
+                            />
+                            <i class="pi pi-lock input-icon"></i>
+                            <button type="button" class="password-toggle" (click)="togglePasswordVisibility()">
+                                <i [class]="showPassword ? 'pi pi-eye-slash' : 'pi pi-eye'"></i>
+                            </button>
+                        </div>
+                        <!-- Error message -->
+                        <div class="error-message"
+                         *ngIf="loginForm.get('password')?.invalid && (loginForm.get('password')?.dirty || loginForm.get('password')?.touched)">
+                            <i class="pi pi-exclamation-circle"></i>
+                            <span>La contraseña es requerida</span>
+                        </div>
+                    </div>
+
+                    <!-- Footer -->
+                    <div class="form-footer">
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" id="remember" formControlName="remember">
+                            <label for="remember">Recordarme</label>
+                        </div>
+                    </div>
+
+                    <!-- Submit button -->
+                    <button type="submit" 
+                    class="btn-submit"
+                    [disabled]="loading || loginForm.invalid">
+                        <div class="btn-content" *ngIf="!loading">
+                            <span>Ingresar al Sistema</span>
+                            <i class="pi pi-arrow-right"></i>
+                        </div>
+
+                        <div class="btn-content" *ngIf="loading">
+                            <span>Validando...</span>
+                            <i class="pi pi-spin pi-spinner"></i>
+                        </div>
+                    </button>
+
+                    <!-- Register Link -->
+                    <div class="register-link">
+                        ¿No tienes cuenta? <a routerLink="/auth/register">Regístrate aquí</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
+</div>
