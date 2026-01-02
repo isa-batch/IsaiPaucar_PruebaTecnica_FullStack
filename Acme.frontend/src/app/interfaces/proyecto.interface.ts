@@ -7,6 +7,7 @@ export interface Proyecto {
   propietarioId: number;
   propietario: Usuario;
   miembros: ProyectoMiembro[];
+  cantidadMiembros: number;
   cantidadTareas: number;
   creadoEn: Date;
 }

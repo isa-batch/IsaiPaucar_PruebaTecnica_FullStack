@@ -5,9 +5,8 @@ import { LoaderComponent } from './shared/components/loader/loader.component';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, LoaderComponent],
+  imports: [RouterOutlet],
   template: `
-    <app-loader></app-loader>
     <router-outlet />
   `,
   styles: ``

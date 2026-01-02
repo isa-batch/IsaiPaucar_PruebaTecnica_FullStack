@@ -1,13 +1,16 @@
-import { Component, signal, HostListener } from '@angular/core';
+import { Component, signal, HostListener, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router, NavigationEnd } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { AvatarModule } from 'primeng/avatar';
 import { MenuModule } from 'primeng/menu';
+import { Menu } from 'primeng/menu';
 import { TooltipModule } from 'primeng/tooltip';
+import { LoaderComponent } from '../../../shared/components/loader/loader.component';
 import { MenuItem } from 'primeng/api';
 import { AuthService } from '../../../services/auth.service';
-import { Router } from '@angular/router';
+import { LoadingService } from '../../../core/services/loading.service';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-layout',
@@ -18,12 +21,15 @@ import { Router } from '@angular/router';
     ButtonModule,
     AvatarModule,
     MenuModule,
-    TooltipModule
+    TooltipModule,
+    LoaderComponent
   ],
   templateUrl: './layout.component.html',
   styleUrls: ['./layout.component.css']
 })
-export class LayoutComponent {
+export class LayoutComponent implements OnInit {
+  @ViewChild('userMenu') userMenu!: Menu;
+
   sidebarOpen = true;
   isLargeScreen = false;
   openSubMenu: string | null = null;
@@ -46,7 +52,8 @@ export class LayoutComponent {
 
   constructor(
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private loadingService: LoadingService
   ) {
     this.currentUser = this.authService.getCurrentUser();
     this.userMenuItems = [
@@ -57,6 +64,21 @@ export class LayoutComponent {
       }
     ];
     this.checkScreenSize();
+  }
+
+  ngOnInit() {
+    // Reset loading state on each navigation
+    this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd)
+    ).subscribe(() => {
+      // Force reset loading state after navigation completes
+      setTimeout(() => {
+        if (this.loadingService.getActiveRequests() > 0) {
+          console.warn('Resetting stuck loading state');
+          this.loadingService.reset();
+        }
+      }, 1000);
+    });
   }
 
   /* HostListener needed for resize, add import if missing */
@@ -93,6 +115,12 @@ export class LayoutComponent {
       this.openSubMenu = null;
     } else {
       this.openSubMenu = label;
+    }
+  }
+
+  toggleUserMenu(event: Event): void {
+    if (this.userMenu) {
+      this.userMenu.toggle(event);
     }
   }
 

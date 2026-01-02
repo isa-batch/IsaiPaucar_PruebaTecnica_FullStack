@@ -1,0 +1,631 @@
+.proyecto-detail-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 2rem;
+    animation: fadeIn 0.5s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.project-header {
+    background: white;
+    padding: 2rem;
+    border-radius: 24px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    margin-bottom: 2rem;
+    border: 1px solid #f1f5f9;
+}
+
+.header-breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+    color: #64748b;
+    margin-bottom: 1.5rem;
+}
+
+.header-breadcrumb strong {
+    color: #1e293b;
+}
+
+.header-main {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 2rem;
+    margin-bottom: 1.5rem;
+}
+
+.project-title {
+    font-size: 2.25rem;
+    font-weight: 800;
+    color: #0f172a;
+    margin: 0 0 0.5rem 0;
+    letter-spacing: -0.025em;
+}
+
+.project-description {
+    color: #64748b;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    max-width: 800px;
+    margin: 0;
+}
+
+.header-actions {
+    display: flex;
+    gap: 1rem;
+}
+
+.btn-invite {
+    background: #f1f5f9 !important;
+    color: #475569 !important;
+    border: none !important;
+    padding: 0.75rem 1.25rem !important;
+    border-radius: 12px !important;
+    font-weight: 600 !important;
+}
+
+.btn-new-task {
+    background: #3b82f6 !important;
+    border: none !important;
+    padding: 0.75rem 1.25rem !important;
+    border-radius: 12px !important;
+    font-weight: 600 !important;
+    box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.2) !important;
+}
+
+.btn-invite:hover {
+    background: #e2e8f0 !important;
+}
+
+.btn-new-task:hover {
+    background: #2563eb !important;
+    transform: translateY(-1px);
+}
+
+.project-meta {
+    display: flex;
+    gap: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #f1f5f9;
+}
+
+.meta-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #64748b;
+    font-size: 0.9rem;
+}
+
+.meta-item i {
+    color: #3b82f6;
+}
+
+/* Grid Layout */
+.project-content-grid {
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    gap: 2rem;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.section-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #1e293b;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.section-title i {
+    color: #3b82f6;
+}
+
+.badge {
+    background: #eff6ff;
+    color: #3b82f6;
+    padding: 0.25rem 0.75rem;
+    border-radius: 100px;
+    font-size: 0.85rem;
+    font-weight: 700;
+}
+
+/* Tasks Table */
+.tasks-section {
+    background: white;
+    padding: 2rem;
+    border-radius: 24px;
+    border: 1px solid #f1f5f9;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+.task-title {
+    font-weight: 600;
+    color: #1e293b;
+}
+
+.avatar-group {
+    display: flex;
+    align-items: center;
+}
+
+.user-avatar {
+    width: 28px;
+    height: 28px;
+    background: #3b82f6;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    font-weight: 700;
+    border: 2px solid white;
+    margin-left: -8px;
+}
+
+.user-avatar:first-child {
+    margin-left: 0;
+}
+
+.text-hint {
+    font-size: 0.85rem;
+    color: #94a3b8;
+    font-style: italic;
+}
+
+/* Sidebar Members */
+.members-sidebar {
+    background: white;
+    padding: 2rem;
+    border-radius: 24px;
+    border: 1px solid #f1f5f9;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    align-self: flex-start;
+}
+
+.members-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.member-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.75rem;
+    border-radius: 12px;
+    transition: background 0.2s;
+}
+
+.member-item:hover {
+    background: #f8fafc;
+}
+
+.member-avatar {
+    width: 40px;
+    height: 40px;
+    background: #f1f5f9;
+    color: #3b82f6;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 1.1rem;
+}
+
+.member-item.owner .member-avatar {
+    background: #eff6ff;
+    color: #3b82f6;
+}
+
+.member-info {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.member-name {
+    font-weight: 600;
+    color: #1e293b;
+    font-size: 0.95rem;
+}
+
+.member-role {
+    font-size: 0.8rem;
+    color: #64748b;
+}
+
+/* Empty States */
+.empty-state-section {
+    text-align: center;
+    padding: 4rem 2rem;
+    color: #94a3b8;
+    background: #fcfdfe;
+    border: 2px dashed #e2e8f0;
+    border-radius: 16px;
+}
+
+/* Page Loading */
+.page-loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 400px;
+    color: #64748b;
+    gap: 1rem;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+    .project-content-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .members-sidebar {
+        order: -1;
+    }
+}
+
+@media (max-width: 640px) {
+    .header-main {
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+
+    .header-actions {
+        width: 100%;
+    }
+
+    .header-actions button {
+        flex: 1;
+    }
+
+    .project-meta {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+}
+
+/* Modal & Form Styling */
+:host ::ng-deep .acme-dialog {
+    border-radius: 20px;
+    overflow: hidden;
+    border: none;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
+:host ::ng-deep .acme-dialog .p-dialog-header {
+    background: #ffffff;
+    padding: 1.5rem;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+:host ::ng-deep .acme-dialog .p-dialog-content {
+    background: #ffffff;
+    padding: 1.5rem;
+}
+
+.dialog-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.header-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+}
+
+.header-icon.invite {
+    background: #eff6ff;
+    color: #3b82f6;
+}
+
+.header-icon.task {
+    background: #f0fdf4;
+    color: #22c55e;
+}
+
+.header-text h3 {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #0f172a;
+}
+
+.header-text p {
+    margin: 0.25rem 0 0 0;
+    font-size: 0.9rem;
+    color: #64748b;
+}
+
+.modern-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.form-field label {
+    font-weight: 600;
+    color: #475569;
+    font-size: 0.9rem;
+}
+
+.required {
+    color: #ef4444;
+}
+
+.input-with-icon {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-with-icon i {
+    position: absolute;
+    left: 1rem;
+    color: #94a3b8;
+}
+
+.input-with-icon input {
+    padding-left: 2.75rem !important;
+}
+
+:host ::ng-deep .acme-p-select {
+    border-radius: 12px !important;
+    border: 1px solid #e2e8f0 !important;
+    background: #fcfdfe !important;
+    padding: 0.25rem !important;
+}
+
+:host ::ng-deep .acme-p-select.p-focus {
+    border-color: #3b82f6 !important;
+    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1) !important;
+}
+
+.dialog-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.btn-secondary {
+    background: #f1f5f9;
+    color: #475569;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.2s;
+}
+
+.btn-secondary:hover {
+    background: #e2e8f0;
+}
+
+.btn-primary {
+    background: #3b82f6;
+    color: white;
+    border: none;
+    padding: 0.75rem 1.75rem;
+    border-radius: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.2s;
+    box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.2);
+}
+
+.btn-primary:hover {
+    background: #2563eb;
+    transform: translateY(-1px);
+    box-shadow: 0 10px 15px -3px rgba(59, 130, 246, 0.3);
+}
+
+.btn-primary:active {
+    transform: translateY(0);
+}
+
+.btn-primary:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+.error-msg {
+    color: #ef4444;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+/* Base styles for pInputText & pInputTextarea in dialog */
+:host ::ng-deep .acme-dialog input.p-inputtext,
+:host ::ng-deep .acme-dialog textarea.p-inputtextarea {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    background: #fcfdfe;
+    color: #1e293b;
+    font-size: 1rem;
+    transition: all 0.2s;
+}
+
+:host ::ng-deep .acme-dialog input.p-inputtext:focus,
+:host ::ng-deep .acme-dialog textarea.p-inputtextarea:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+    background: white;
+}
+
+/* Autocomplete Styles */
+.autocomplete-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 12px;
+    cursor: pointer;
+    transition: background 0.2s;
+    border-radius: 8px;
+}
+
+.autocomplete-item:hover {
+    background: #f8fafc;
+}
+
+.user-avatar-small {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.9rem;
+    flex-shrink: 0;
+}
+
+.user-details {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    flex-grow: 1;
+    min-width: 0;
+}
+
+.user-name {
+    font-weight: 600;
+    color: #1e293b;
+    font-size: 0.95rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.user-email {
+    font-size: 0.85rem;
+    color: #64748b;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.hint-text {
+    font-size: 0.8rem;
+    color: #94a3b8;
+    margin-top: 0.25rem;
+}
+
+/* AutoComplete Panel Styling */
+:host ::ng-deep .p-autocomplete-panel {
+    border-radius: 12px !important;
+    border: 1px solid #e2e8f0 !important;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1) !important;
+    margin-top: 4px !important;
+    overflow: hidden !important;
+}
+
+:host ::ng-deep .p-autocomplete-panel .p-autocomplete-items {
+    padding: 6px !important;
+}
+
+:host ::ng-deep .p-autocomplete-panel .p-autocomplete-item {
+    border-radius: 8px !important;
+    margin-bottom: 2px !important;
+}
+
+:host ::ng-deep .p-autocomplete-panel .p-autocomplete-item.p-focus {
+    background: #f1f5f9 !important;
+}
+
+:host ::ng-deep .p-autocomplete-panel .p-autocomplete-item:last-child {
+    margin-bottom: 0 !important;
+}
+
+/* AutoComplete Input Styling */
+:host ::ng-deep .p-autocomplete input.p-autocomplete-input {
+    padding: 0.75rem 1rem !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 12px !important;
+    background: #fcfdfe !important;
+    color: #1e293b !important;
+    font-size: 1rem !important;
+    transition: all 0.2s !important;
+}
+
+:host ::ng-deep .p-autocomplete input.p-autocomplete-input:focus {
+    outline: none !important;
+    border-color: #3b82f6 !important;
+    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1) !important;
+    background: white !important;
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+    .dialog-footer {
+        flex-direction: column-reverse;
+    }
+
+    .btn-secondary,
+    .btn-primary {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .user-details {
+        font-size: 0.9rem;
+    }
+
+    .user-avatar-small {
+        width: 32px;
+        height: 32px;
+        font-size: 0.85rem;
+    }
+}

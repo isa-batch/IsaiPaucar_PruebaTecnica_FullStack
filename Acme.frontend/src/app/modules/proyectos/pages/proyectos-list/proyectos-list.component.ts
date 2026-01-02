@@ -33,7 +33,6 @@ import { Proyecto, ProyectoRequest } from '../../../../interfaces/proyecto.inter
 export class ProyectosListComponent implements OnInit {
   private confirmationService = inject(ConfirmationService);
   proyectos = signal<Proyecto[]>([]);
-  loading = signal(false);
   showDialog = signal(false);
   proyectoForm: FormGroup;
   editingProyecto: Proyecto | null = null;
@@ -55,17 +54,14 @@ export class ProyectosListComponent implements OnInit {
   }
 
   loadProyectos(): void {
-    this.loading.set(true);
     this.proyectoService.getAll().subscribe({
       next: (response) => {
         if (response.success && response.data) {
           this.proyectos.set(response.data);
         }
-        this.loading.set(false);
       },
       error: (error) => {
         this.toastService.error('Error al cargar proyectos');
-        this.loading.set(false);
       }
     });
   }
@@ -118,7 +114,10 @@ export class ProyectosListComponent implements OnInit {
     this.router.navigate(['/proyectos', proyecto.id]);
   }
 
-  deleteProyecto(proyecto: Proyecto): void {
+  deleteProyecto(proyecto: Proyecto, event?: MouseEvent): void {
+    if (event) {
+      event.stopPropagation();
+    }
     this.confirmationService.confirm({
       message: `¿Estás seguro de que deseas eliminar el proyecto "${proyecto.nombre}"? Esta acción no se puede deshacer.`,
       header: 'Confirmar Eliminación',

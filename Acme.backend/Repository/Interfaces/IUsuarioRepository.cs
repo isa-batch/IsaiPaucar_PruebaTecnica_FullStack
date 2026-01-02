@@ -8,5 +8,6 @@ namespace Repository.Interfaces
         Task<Usuario?> GetByEmailAsync(string email);
         Task<Usuario> CreateAsync(Usuario usuario);
         Task<bool> EmailExistsAsync(string email);
+        Task<List<Usuario>> SearchAsync(string searchTerm);
     }
 }

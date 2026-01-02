@@ -10,7 +10,7 @@
     ></button>
   </div>
 
-  <div class="proyectos-grid" *ngIf="!loading(); else loadingTemplate">
+  <div class="proyectos-grid">
     <div
       *ngFor="let proyecto of proyectos()"
       class="acme-project-card"
@@ -37,11 +37,11 @@
         <div class="card-stats-v2">
           <div class="stat-pill">
             <i class="pi pi-users"></i>
-            <span class="count">{{ proyecto.miembros?.length || 0 }}</span>
+            <span class="count">{{ proyecto.cantidadMiembros || 0 }}</span>
             <span class="label">Miembros</span>
           </div>
           <div class="stat-pill">
-            <i class="pi pi-check-square"></i>
+            <i class="pi pi-check-circle"></i>
             <span class="count">{{ proyecto.cantidadTareas || 0 }}</span>
             <span class="label">Tareas</span>
           </div>
@@ -57,10 +57,13 @@
           <i class="pi pi-pencil"></i>
           <span>Editar</span>
         </button>
-        <button class="btn-action delete" (click)="deleteProyecto(proyecto)" pTooltip="Eliminar proyecto">
-          <i class="pi pi-trash"></i>
-          <span>Eliminar</span>
-        </button>
+        <button
+            pButton
+            icon="pi pi-trash"
+            class="p-button-rounded p-button-danger p-button-text"
+            (click)="deleteProyecto(proyecto, $event)"
+            pTooltip="Eliminar proyecto"
+          ></button>
       </div>
     </div>
 
@@ -70,13 +73,6 @@
       <p>Crea tu primer proyecto para comenzar</p>
     </div>
   </div>
-
-  <ng-template #loadingTemplate>
-    <div class="loading-state">
-      <i class="pi pi-spin pi-spinner text-4xl text-primary"></i>
-      <p>Cargando proyectos...</p>
-    </div>
-  </ng-template>
 </div>
 
 <!-- Dialog -->

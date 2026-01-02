@@ -37,5 +37,19 @@ namespace Repository.Implementations
             return await _context.Usuarios
                 .AnyAsync(u => u.email == email);
         }
+
+        public async Task<List<Usuario>> SearchAsync(string searchTerm)
+        {
+            if (string.IsNullOrWhiteSpace(searchTerm))
+                return new List<Usuario>();
+
+            var lowerSearchTerm = searchTerm.ToLower();
+
+            return await _context.Usuarios
+                .Where(u => u.nombre.ToLower().Contains(lowerSearchTerm) ||
+                           u.email.ToLower().Contains(lowerSearchTerm))
+                .Take(10)
+                .ToListAsync();
+        }
     }
 }
