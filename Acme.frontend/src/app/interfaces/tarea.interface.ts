@@ -16,12 +16,13 @@ export interface Tarea {
 }
 
 export interface TareaRequest {
-  proyectoId: number;
-  titulo: string;
-  descripcion?: string;
-  estadoProgreso: number;
-  prioridad: number;
-  usuariosAsignadosIds: number[];
+  Id?: number;
+  ProyectoId: number;
+  Titulo: string;
+  Descripcion?: string;
+  EstadoProgreso: number;
+  Prioridad: number;
+  UsuariosAsignadosIds: number[];
 }
 
 export enum EstadoTarea {

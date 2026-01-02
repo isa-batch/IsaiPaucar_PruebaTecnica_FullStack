@@ -35,7 +35,7 @@
       <div class="project-meta">
         <div class="meta-item">
           <i class="pi pi-user"></i>
-          <span>Propietario: <strong>{{ proj.propietario?.nombre || 'Desconocido' }}</strong></span>
+          <span>Propietario: <strong>{{ proj.propietario.nombre || 'Desconocido' }}</strong></span>
         </div>
         <div class="meta-item">
           <i class="pi pi-calendar"></i>
@@ -69,26 +69,54 @@
                   <span class="task-title">{{ tarea.titulo }}</span>
                 </td>
                 <td>
-                  <p-tag [value]="tarea.estadoProgresoNombre" [severity]="getStatusSeverity(tarea.estadoProgreso)"></p-tag>
+                  <div class="status-badge-container" (click)="showStatusMenu($event, tarea)">
+                    <p-tag 
+                      [value]="tarea.estadoProgresoNombre" 
+                      [severity]="getStatusSeverity(tarea.estadoProgreso)"
+                      class="interactive-tag"
+                      pTooltip="Cambiar estado"
+                      tooltipPosition="top"
+                    ></p-tag>
+                  </div>
                 </td>
                 <td>
                   <p-tag [value]="tarea.prioridadNombre" [severity]="getPrioritySeverity(tarea.prioridad)"></p-tag>
                 </td>
                 <td>
                   <div class="avatar-group">
-                    <span *ngFor="let user of tarea.usuariosAsignados" class="user-avatar" [title]="user.nombre">
-                      {{ user.nombre.charAt(0) }}
+                    <span *ngFor="let user of tarea.usuariosAsignados" class="user-avatar" [title]="user.nombre" pTooltip="{{user.nombre}}">
+                      {{ getFirstName(user.nombre) }}
                     </span>
                     <span *ngIf="tarea.usuariosAsignados.length === 0" class="text-hint">Sin asignar</span>
                   </div>
                 </td>
                 <td>
-                  <button
-                    pButton
-                    icon="pi pi-ellipsis-v"
-                    class="p-button-text p-button-secondary"
-                    (click)="showTaskActions($event, tarea)"
-                  ></button>
+                  <div class="action-buttons-group">
+                    <button
+                      pButton
+                      icon="pi pi-user-edit"
+                      class="p-button-text p-button-success p-button-sm action-btn"
+                      (click)="openAssignModal(tarea)"
+                      pTooltip="Asignar miembro"
+                      tooltipPosition="left"
+                    ></button>
+                    <button
+                      pButton
+                      icon="pi pi-pencil"
+                      class="p-button-text p-button-info p-button-sm action-btn"
+                      (click)="openEditTaskModal(tarea)"
+                      pTooltip="Editar tarea"
+                      tooltipPosition="left"
+                    ></button>
+                    <button
+                      pButton
+                      icon="pi pi-trash"
+                      class="p-button-text p-button-danger p-button-sm action-btn"
+                      (click)="eliminarTarea(tarea)"
+                      pTooltip="Eliminar tarea"
+                      tooltipPosition="left"
+                    ></button>
+                  </div>
                 </td>
               </tr>
             </ng-template>
@@ -110,15 +138,15 @@
       <aside class="members-sidebar">
         <div class="section-header">
           <h2 class="section-title"><i class="pi pi-users"></i> Miembros</h2>
-          <span class="badge">{{ (proj.miembros?.length || 0) }}</span>
+          <span class="badge">{{ proj.miembros.length }}</span>
         </div>
 
         <div class="members-list">
           <!-- Owner first -->
           <div class="member-item owner">
-            <div class="member-avatar">{{ proj.propietario?.nombre?.charAt(0) || '?' }}</div>
+            <div class="member-avatar">{{ proj.propietario.nombre.charAt(0) || '?' }}</div>
             <div class="member-info">
-              <span class="member-name">{{ proj.propietario?.nombre || 'Desconocido' }}</span>
+              <span class="member-name">{{ proj.propietario.nombre || 'Desconocido' }}</span>
               <span class="member-role">Owner</span>
             </div>
             <p-tag value="OWNER" severity="info"></p-tag>
@@ -293,3 +321,68 @@
     </div>
   </form>
 </p-dialog>
+
+<!-- Assign Modal -->
+<p-dialog 
+  [(visible)]="showAssignModal" 
+  [modal]="true" 
+  [style]="{ width: '400px' }"
+  styleClass="acme-dialog"
+  [draggable]="false"
+  [resizable]="false"
+>
+  <ng-template pTemplate="header">
+    <div class="dialog-header">
+      <div class="header-icon invite" style="background: #ecfdf5; color: #10b981;">
+        <i class="pi pi-user-edit"></i>
+      </div>
+      <div class="header-text">
+        <h3>Asignar Tarea</h3>
+        <p>Selecciona quién se encargará de esta actividad</p>
+      </div>
+    </div>
+  </ng-template>
+
+  <div class="modern-form mt-4">
+    <div class="form-field">
+      <label for="assignee">Miembro del proyecto</label>
+      <p-dropdown 
+        [options]="projectMembers" 
+        [ngModel]="selectedAssigneeId()" 
+        (ngModelChange)="selectedAssigneeId.set($event)"
+        optionLabel="nombre" 
+        optionValue="id"
+        [showClear]="true"
+        placeholder="Selecciona un miembro"
+        styleClass="w-full"
+        appendTo="body"
+        emptyMessage="No hay miembros disponibles"
+      >
+        <ng-template let-item pTemplate="selectedItem">
+          <div class="flex align-items-center gap-2" *ngIf="item">
+            <div class="user-avatar-small">{{ item.nombre.charAt(0).toUpperCase() }}</div>
+            <span>{{ item.nombre }}</span>
+          </div>
+        </ng-template>
+        <ng-template let-member pTemplate="item">
+          <div class="flex align-items-center gap-2">
+            <div class="user-avatar-small">{{ member.nombre.charAt(0).toUpperCase() }}</div>
+            <span>{{ member.nombre }}</span>
+          </div>
+        </ng-template>
+      </p-dropdown>
+      <small class="hint-text mt-1 block">Deja vacío o borra selección para desasignar (Ninguno)</small>
+    </div>
+
+    <div class="dialog-footer mt-6">
+      <button type="button" class="btn-secondary" (click)="showAssignModal.set(false)">
+        <i class="pi pi-times"></i> Cancelar
+      </button>
+      <button type="button" class="btn-primary" (click)="asignarMiembro()">
+        <i class="pi pi-check"></i> Asignar
+      </button>
+    </div>
+  </div>
+</p-dialog>
+
+<p-confirmDialog styleClass="acme-confirm-dialog"></p-confirmDialog>

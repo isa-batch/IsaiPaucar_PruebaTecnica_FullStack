@@ -320,7 +320,7 @@ namespace Domain
                     );
                 }
 
-                await _tareaRepository.DeleteAsync(id);
+                await _tareaRepository.DeleteAsync(id, usuarioId);
 
                 return Response<bool>.SuccessResponse(
                     true,

@@ -13,13 +13,16 @@ import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
 import { TagModule } from 'primeng/tag';
 import { DialogModule } from 'primeng/dialog';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { InputTextModule } from 'primeng/inputtext';
 import { InputTextarea } from 'primeng/inputtextarea';
 import { ReactiveFormsModule, FormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Select } from 'primeng/select';
 import { AutoComplete } from 'primeng/autocomplete';
+import { DropdownModule } from 'primeng/dropdown';
 import { Menu } from 'primeng/menu';
-import { MenuItem } from 'primeng/api';
+import { TooltipModule } from 'primeng/tooltip';
+import { MenuItem, ConfirmationService } from 'primeng/api';
 import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 
 @Component({
@@ -37,7 +40,10 @@ import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
     FormsModule,
     Select,
     AutoComplete,
-    Menu
+    Menu,
+    TooltipModule,
+    DropdownModule,
+    ConfirmDialogModule
   ],
   templateUrl: './proyecto-detail.component.html',
   styleUrl: './proyecto-detail.component.css'
@@ -51,6 +57,7 @@ export class ProyectoDetailComponent implements OnInit {
   private toastService = inject(ToastService);
   private usuarioService = inject(UsuarioService);
   private fb = inject(FormBuilder);
+  private confirmationService = inject(ConfirmationService);
 
   @ViewChild('taskMenu') taskMenu!: Menu;
 
@@ -61,7 +68,10 @@ export class ProyectoDetailComponent implements OnInit {
   // Modals visibility
   showInviteModal = signal(false);
   showTaskModal = signal(false);
+  showAssignModal = signal(false);
   editingTarea = signal<Tarea | null>(null);
+  selectedTaskToAssign = signal<Tarea | null>(null);
+  selectedAssigneeId = signal<number | null>(null);
 
   // Autocomplete
   usuariosFiltrados = signal<Usuario[]>([]);
@@ -71,7 +81,6 @@ export class ProyectoDetailComponent implements OnInit {
   inviteForm: FormGroup;
   taskForm: FormGroup;
 
-  // Enums for template
   EstadoTarea = EstadoTarea;
   PrioridadTarea = PrioridadTarea;
 
@@ -228,9 +237,15 @@ export class ProyectoDetailComponent implements OnInit {
     if (!proj) return;
 
     const tarea = this.editingTarea();
+    const formValue = this.taskForm.value;
     const request: TareaRequest = {
-      ...this.taskForm.value,
-      proyectoId: proj.id
+      Id: tarea?.id,
+      ProyectoId: proj.id,
+      Titulo: formValue.titulo,
+      Descripcion: formValue.descripcion || '',
+      EstadoProgreso: formValue.estadoProgreso,
+      Prioridad: formValue.prioridad,
+      UsuariosAsignadosIds: formValue.usuariosAsignadosIds || []
     };
 
     const operation = tarea
@@ -251,47 +266,25 @@ export class ProyectoDetailComponent implements OnInit {
     });
   }
 
-  showTaskActions(event: Event, tarea: Tarea): void {
+  showStatusMenu(event: Event, tarea: Tarea): void {
     this.taskMenuItems = [
       {
-        label: 'Editar',
-        icon: 'pi pi-pencil',
-        command: () => this.openEditTaskModal(tarea)
+        label: 'Pendiente',
+        icon: 'pi pi-clock',
+        iconClass: 'text-warning-menu',
+        command: () => this.cambiarEstadoTarea(tarea, EstadoTarea.PENDIENTE)
       },
       {
-        label: 'Cambiar Estado',
-        icon: 'pi pi-sync',
-        items: [
-          {
-            label: 'Pendiente',
-            icon: 'pi pi-clock',
-            command: () => this.cambiarEstadoTarea(tarea, EstadoTarea.PENDIENTE)
-          },
-          {
-            label: 'En Progreso',
-            icon: 'pi pi-spinner',
-            command: () => this.cambiarEstadoTarea(tarea, EstadoTarea.EN_PROGRESO)
-          },
-          {
-            label: 'Completada',
-            icon: 'pi pi-check',
-            command: () => this.cambiarEstadoTarea(tarea, EstadoTarea.COMPLETADA)
-          }
-        ]
+        label: 'En Progreso',
+        icon: 'pi pi-spinner',
+        iconClass: 'text-info-menu',
+        command: () => this.cambiarEstadoTarea(tarea, EstadoTarea.EN_PROGRESO)
       },
       {
-        label: 'Asignar',
-        icon: 'pi pi-user-plus',
-        command: () => this.openAsignarModal(tarea)
-      },
-      {
-        separator: true
-      },
-      {
-        label: 'Eliminar',
-        icon: 'pi pi-trash',
-        styleClass: 'text-red-500',
-        command: () => this.eliminarTarea(tarea)
+        label: 'Completada',
+        icon: 'pi pi-check-circle',
+        iconClass: 'text-success-menu',
+        command: () => this.cambiarEstadoTarea(tarea, EstadoTarea.COMPLETADA)
       }
     ];
 
@@ -303,12 +296,13 @@ export class ProyectoDetailComponent implements OnInit {
     if (!proj) return;
 
     const request: TareaRequest = {
-      titulo: tarea.titulo,
-      descripcion: tarea.descripcion,
-      estadoProgreso: nuevoEstado,
-      prioridad: tarea.prioridad,
-      proyectoId: proj.id,
-      usuariosAsignadosIds: tarea.usuariosAsignados?.map(u => u.id) || []
+      Id: tarea.id,
+      Titulo: tarea.titulo || '',
+      Descripcion: tarea.descripcion || '',
+      EstadoProgreso: nuevoEstado,
+      Prioridad: tarea.prioridad || 2,
+      ProyectoId: proj.id,
+      UsuariosAsignadosIds: tarea.usuariosAsignados?.map(u => u.id) || []
     };
 
     this.tareaService.update(tarea.id, request).subscribe({
@@ -324,28 +318,92 @@ export class ProyectoDetailComponent implements OnInit {
     });
   }
 
-  openAsignarModal(_tarea: Tarea): void {
-    // TODO: Implementar modal de asignación de usuarios
-    this.toastService.info('Funcionalidad de asignación en desarrollo');
+  getFirstName(fullName: string): string {
+    if (!fullName) return '?';
+    return fullName.split(' ')[0];
+  }
+
+  openAssignModal(tarea: Tarea): void {
+    this.selectedTaskToAssign.set(tarea);
+
+    const firstAssigned = tarea.usuariosAsignados?.[0];
+    this.selectedAssigneeId.set(firstAssigned ? firstAssigned.id : null);
+    this.showAssignModal.set(true);
+  }
+
+  asignarMiembro(): void {
+    const tarea = this.selectedTaskToAssign();
+    const proj = this.proyecto();
+    const assigneeId = this.selectedAssigneeId();
+    
+    if (!tarea || !proj) return;
+
+    const request: TareaRequest = {
+      Id: tarea.id,
+      Titulo: tarea.titulo || '',
+      Descripcion: tarea.descripcion || '',
+      EstadoProgreso: tarea.estadoProgreso || 2,
+      Prioridad: tarea.prioridad || 2,
+      ProyectoId: proj.id,
+      
+      UsuariosAsignadosIds: assigneeId ? [assigneeId] : []
+    };
+
+    this.tareaService.update(tarea.id, request).subscribe({
+      next: (res) => {
+        if (res.success) {
+          this.toastService.success('Asignación actualizada correctamente');
+          this.showAssignModal.set(false);
+          this.loadTareas(proj.id);
+        } else {
+          this.toastService.error(res.message);
+        }
+      },
+      error: () => this.toastService.error('Error al actualizar la asignación')
+    });
+  }
+
+  get projectMembers() {
+    const proj = this.proyecto();
+    if (!proj) return [];
+    
+    const members = proj.miembros.map(m => m.usuario);
+    
+    const isOwnerInMembers = members.some(u => u.id === proj.propietario.id);
+    if (!isOwnerInMembers) {
+      members.unshift(proj.propietario);
+    }
+    
+    return members;
   }
 
   eliminarTarea(tarea: Tarea): void {
     const proj = this.proyecto();
     if (!proj) return;
 
-    if (confirm(`¿Estás seguro de eliminar la tarea "${tarea.titulo}"?`)) {
-      this.tareaService.delete(tarea.id).subscribe({
-        next: (res) => {
-          if (res.success) {
-            this.toastService.success('Tarea eliminada');
-            this.loadTareas(proj.id);
-          } else {
-            this.toastService.error(res.message);
-          }
-        },
-        error: () => this.toastService.error('Error al eliminar tarea')
-      });
-    }
+    this.confirmationService.confirm({
+      message: `¿Estás seguro de que deseas eliminar la tarea "${tarea.titulo}"? Esta acción no se puede deshacer.`,
+      header: 'Confirmar Eliminación',
+      icon: 'pi pi-exclamation-triangle',
+      acceptLabel: 'Sí, eliminar',
+      rejectLabel: 'Cancelar',
+      acceptButtonStyleClass: 'btn-delete-confirm',
+      rejectButtonStyleClass: 'btn-cancel-confirm',
+      accept: () => {
+        this.tareaService.delete(tarea.id).subscribe({
+          next: (res) => {
+            if (res.success) {
+              console.log('Tarea eliminada '+ tarea.id);
+              this.toastService.success('Tarea eliminada correctamente');
+              this.loadTareas(proj.id);
+            } else {
+              this.toastService.error(res.message);
+            }
+          },
+          error: () => this.toastService.error('Error al intentar eliminar la tarea')
+        });
+      }
+    });
   }
 
   getStatusSeverity(status: number): "success" | "secondary" | "info" | "warning" | "danger" | "contrast" | undefined {

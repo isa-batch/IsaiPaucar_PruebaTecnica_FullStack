@@ -43,20 +43,19 @@ namespace Repository.Implementations
 
         public async Task<Tarea> UpdateAsync(Tarea tarea)
         {
-            _context.Tareas.Update(tarea);
+            _context.Entry(tarea).State = EntityState.Modified;
             await _context.SaveChangesAsync();
             return tarea;
         }
 
-        public async Task DeleteAsync(int id)
+        public async Task DeleteAsync(int id, int usuarioId)
         {
-            var tarea = await _context.Tareas.FindAsync(id);
-            if (tarea != null)
-            {
-                tarea.estado = 0; // Eliminación lógica
-                tarea.modificado_en = DateTime.UtcNow;
-                await _context.SaveChangesAsync();
-            }
+            await _context.Tareas
+                .Where(t => t.id == id)
+                .ExecuteUpdateAsync(s => s
+                    .SetProperty(t => t.estado, 0)
+                    .SetProperty(t => t.modificado_por, usuarioId)
+                    .SetProperty(t => t.modificado_en, DateTime.UtcNow));
         }
 
         public async Task AsignarUsuarioAsync(TareaUsuario tareaUsuario)
