@@ -218,10 +218,11 @@
             <div class="user-avatar-small">
               {{ usuario.nombre.charAt(0).toUpperCase() }}
             </div>
-            <div class="user-details">
+            <div class="user-details flex-1">
               <span class="user-name">{{ usuario.nombre }}</span>
               <span class="user-email">{{ usuario.email }}</span>
             </div>
+            <p-tag *ngIf="isUserInProject(usuario.id)" value="Miembro" severity="info" styleClass="text-xs"></p-tag>
           </div>
         </ng-template>
       </p-autoComplete>
@@ -232,7 +233,7 @@
       <button type="button" class="btn-secondary" (click)="showInviteModal.set(false)">
         <i class="pi pi-times"></i> Cancelar
       </button>
-      <button type="submit" class="btn-primary" [disabled]="!usuarioSeleccionado()">
+      <button type="submit" class="btn-primary" [disabled]="!usuarioSeleccionado() || isUserInProject(usuarioSeleccionado()!.id)">
         <i class="pi pi-send"></i> Enviar Invitación
       </button>
     </div>

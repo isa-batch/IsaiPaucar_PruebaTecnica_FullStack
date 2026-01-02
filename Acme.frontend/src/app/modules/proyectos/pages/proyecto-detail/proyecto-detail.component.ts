@@ -186,6 +186,11 @@ export class ProyectoDetailComponent implements OnInit {
       return;
     }
 
+    if (this.isUserInProject(usuario.id)) {
+      this.toastService.warning('Este usuario ya forma parte del proyecto');
+      return;
+    }
+
     const proj = this.proyecto();
     if (!proj) return;
 
@@ -375,6 +380,12 @@ export class ProyectoDetailComponent implements OnInit {
     }
     
     return members;
+  }
+
+  isUserInProject(usuarioId: number): boolean {
+    const proj = this.proyecto();
+    if (!proj) return false;
+    return proj.propietarioId === usuarioId || proj.miembros.some(m => m.usuario.id === usuarioId);
   }
 
   eliminarTarea(tarea: Tarea): void {
