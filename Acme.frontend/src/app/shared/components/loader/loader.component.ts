@@ -8,7 +8,7 @@ import { LoadingService } from '../../../core/services/loading.service';
   standalone: true,
   imports: [CommonModule, ProgressSpinnerModule],
   template: `
-    <div *ngIf="loadingService.loading$ | async" class="loader-overlay">
+    <div *ngIf="loadingService.loading()" class="loader-overlay">
       <div class="loader-container">
         <p-progressSpinner 
           styleClass="w-16 h-16" 
@@ -21,18 +21,19 @@ import { LoadingService } from '../../../core/services/loading.service';
   `,
   styles: [`
     .loader-overlay {
-      position: fixed;
+      position: absolute;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      background-color: rgba(255, 255, 255, 0.8);
-      backdrop-filter: blur(4px);
-      z-index: 9999;
+      background-color: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(2px);
+      z-index: 50;
       display: flex;
       align-items: center;
       justify-content: center;
       animation: fadeIn 0.2s ease-out;
+      border-radius: inherit;
     }
 
     .loader-container {
