@@ -67,7 +67,7 @@ namespace Model
             CreateMap<InvitacionProyecto, InvitacionDto>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.id))
                 .ForMember(dest => dest.ProyectoId, opt => opt.MapFrom(src => src.proyecto_id))
-                .ForMember(dest => dest.ProyectoNombre, opt => opt.MapFrom(src => src.Proyecto.nombre))
+                .ForMember(dest => dest.Proyecto, opt => opt.MapFrom(src => src.Proyecto))
                 .ForMember(dest => dest.UsuarioId, opt => opt.MapFrom(src => src.usuario_id))
                 .ForMember(dest => dest.Usuario, opt => opt.MapFrom(src => src.Usuario))
                 .ForMember(dest => dest.EstadoInvitacion, opt => opt.MapFrom(src => src.estado_invitacion))

@@ -84,6 +84,7 @@ namespace Repository.Implementations
         {
             return await _context.InvitacionesProyecto
                 .Include(i => i.Proyecto)
+                    .ThenInclude(p => p.Propietario)
                 .Include(i => i.UsuarioCreador)
                 .Where(i => i.usuario_id == usuarioId && i.estado_invitacion == "PENDIENTE")
                 .ToListAsync();

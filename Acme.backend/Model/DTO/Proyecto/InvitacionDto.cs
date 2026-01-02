@@ -6,7 +6,7 @@ namespace Model.DTO.Proyecto
     {
         public int Id { get; set; }
         public int ProyectoId { get; set; }
-        public string ProyectoNombre { get; set; } = string.Empty;
+        public ProyectoDto? Proyecto { get; set; }
         public int UsuarioId { get; set; }
         public UsuarioDto? Usuario { get; set; }
         public string EstadoInvitacion { get; set; } = string.Empty;

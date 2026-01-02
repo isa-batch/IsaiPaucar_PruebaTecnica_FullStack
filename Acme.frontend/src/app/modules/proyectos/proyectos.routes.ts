@@ -6,11 +6,11 @@ export const proyectosRoutes: Routes = [
     loadComponent: () => import('./pages/proyectos-list/proyectos-list.component').then(m => m.ProyectosListComponent)
   },
   {
-    path: ':id',
-    loadComponent: () => import('./pages/proyecto-detail/proyecto-detail.component').then(m => m.ProyectoDetailComponent)
-  },
-  {
     path: 'invitaciones',
     loadComponent: () => import('./pages/invitaciones/invitaciones.component').then(m => m.InvitacionesComponent)
+  },
+  {
+    path: ':id',
+    loadComponent: () => import('./pages/proyecto-detail/proyecto-detail.component').then(m => m.ProyectoDetailComponent)
   }
 ];

@@ -30,10 +30,11 @@ export interface InvitacionDto {
   id: number;
   proyectoId: number;
   proyecto: Proyecto;
-  emailUsuario: string;
-  estado: number;
-  estadoNombre: string;
+  usuarioId: number;
+  usuario?: Usuario;
+  estadoInvitacion: string;
   creadoEn: Date;
+  creador?: Usuario;
 }
 
 export interface InvitacionRequest {
@@ -52,7 +53,7 @@ export enum RolProyecto {
 }
 
 export enum EstadoInvitacion {
-  PENDIENTE = 1,
-  ACEPTADA = 2,
-  RECHAZADA = 3
+  PENDIENTE = 'PENDIENTE',
+  ACEPTADA = 'ACEPTADA',
+  RECHAZADA = 'RECHAZADA'
 }

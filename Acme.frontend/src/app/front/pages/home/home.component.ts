@@ -53,7 +53,7 @@ export class HomeComponent implements OnInit {
     this.proyectoService.getMisInvitaciones().subscribe({
       next: (response) => {
         if (response.success && response.data) {
-          this.pendingInvitations = response.data.filter(inv => inv.estado === EstadoInvitacion.PENDIENTE).length;
+          this.pendingInvitations = response.data.filter(inv => inv.estadoInvitacion === EstadoInvitacion.PENDIENTE).length;
         }
         this.checkLoadingComplete();
       },
